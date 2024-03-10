@@ -31,9 +31,8 @@ public class UserServiceImpl implements UserService {
 		try {
 			newUser = userRepository.save(user);
 		} catch (Exception e) {
-
 			logger.error(
-					"An Error Occurred While Creatting User:UserServiceImpl. Exception message is: " + e.getMessage());
+					"An Error Occurred While Creating User:UserServiceImpl. Exception message is: " + e.getMessage());
 
 			e.printStackTrace();
 		}
@@ -43,9 +42,19 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<User> getAllUsers() {
 
-		logger.info("Get a List of Users:UserServiceImpl");
+		List<User> listOfUsers = null;
+		
+		try {
+			logger.info("Get a List of Users:UserServiceImpl");
 
-		return userRepository.findAll();
+			listOfUsers = userRepository.findAll();
+		} catch (Exception e) {
+			logger.error("An Error Occurred While Getting a List of Users:UserServiceImpl. Exception message is: "
+					+ e.getMessage());
+
+			e.printStackTrace();
+		}
+		return listOfUsers;
 	}
 
 	@Override
@@ -59,10 +68,12 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User updateUser(User user, String userId) {
 
+		User refUser = null;
+
 		User theUser = userRepository.findById(userId)
 				.orElseThrow(() -> new RuntimeException("Error: User not updated"));
 
-		logger.info("Update User:UserServiceImpl " + theUser);
+		logger.info("Update User:UserServiceImpl " + theUser + ", " + userId);
 
 		theUser.setName(user.getName());
 
@@ -73,7 +84,7 @@ public class UserServiceImpl implements UserService {
 		try {
 			logger.info("Updated User:UserServiceImpl to " + theUser);
 
-			theUser = userRepository.save(theUser);
+			refUser = userRepository.save(theUser);
 		} catch (Exception e) {
 
 			logger.error(
@@ -81,7 +92,7 @@ public class UserServiceImpl implements UserService {
 
 			e.printStackTrace();
 		}
-		return theUser;
+		return refUser;
 	}
 
 	@Override

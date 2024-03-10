@@ -31,7 +31,7 @@ public class UserController {
 	@PostMapping
 	public ResponseEntity<User> createUser(@RequestBody User user) {
 
-		logger.info("Create Single User Handler: UserController " + user);
+		logger.info("Create a Single User Handler: UserController " + user);
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(user));
 	}

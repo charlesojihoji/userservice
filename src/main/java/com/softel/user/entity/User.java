@@ -66,4 +66,9 @@ public class User {
 		this.about = about;
 	}
 
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", name=" + name + ", emailId=" + emailId + ", about=" + about + "]";
+	}
+
 }
