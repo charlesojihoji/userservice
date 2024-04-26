@@ -1,11 +1,15 @@
 package com.softel.user.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
+import com.softel.user.response.UserServiceResponse;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.softel.user.entity.User;
@@ -62,7 +66,7 @@ public class UserServiceImpl implements UserService {
 
 		logger.info("Get a Single User:UserServiceImpl " + id);
 
-		return userRepository.findById(id).orElseThrow(() -> new RuntimeException("Error: User not found"));
+		return userRepository.findById(id).orElse(new User());
 	}
 
 	@Override

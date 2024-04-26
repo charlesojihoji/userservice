@@ -2,6 +2,7 @@ package com.softel.user.controllers;
 
 import java.util.List;
 
+import com.softel.user.response.UserServiceResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,7 @@ public class UserController {
 	public ResponseEntity<User> getUser(@PathVariable String id) {
 
 		logger.info("Get a Single User Handler: UserController " + id);
-		
+
 		return ResponseEntity.status(HttpStatus.OK).body(userService.getUser(id));
 	}
 
