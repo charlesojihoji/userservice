@@ -62,11 +62,11 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User getUser(String id) {
+	public User getUser(String hotelId) {
 
-		logger.info("Get a Single User:UserServiceImpl " + id);
+		logger.info("Get a Single User:UserServiceImpl " + hotelId);
 
-		return userRepository.findById(id).orElse(new User());
+		return userRepository.findUserByHotelId(hotelId).orElse(new User());
 	}
 
 	@Override

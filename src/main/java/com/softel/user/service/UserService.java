@@ -12,7 +12,7 @@ public interface UserService {
 	
 	public List<User> getAllUsers();
 	
-	public User getUser(String id);
+	public User getUser(String hotelId);
 	
 	public User updateUser(User user, String userId);
 	
