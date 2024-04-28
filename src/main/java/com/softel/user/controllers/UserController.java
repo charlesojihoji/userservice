@@ -37,12 +37,12 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(user));
 	}
 
-	@GetMapping("/{id}")
-	public ResponseEntity<User> getUser(@PathVariable String id) {
+	@GetMapping("/{hotelId}")
+	public ResponseEntity<User> getUser(@PathVariable String hotelId) {
 
-		logger.info("Get a Single User Handler: UserController " + id);
+		logger.info("Get a Single User Handler: UserController " + hotelId);
 
-		return ResponseEntity.status(HttpStatus.OK).body(userService.getUser(id));
+		return ResponseEntity.status(HttpStatus.OK).body(userService.getUser(hotelId));
 	}
 
 	@GetMapping
