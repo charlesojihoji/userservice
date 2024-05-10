@@ -46,11 +46,13 @@ public class UserController {
 	}
 
 	@GetMapping
-	public ResponseEntity<List<User>> getAllUsers() {
+	public ResponseEntity<List<UserServiceResponse>> getAllUsers() {
 
 		logger.info("Get a List of Users Handler: UserController");
 		
-		return ResponseEntity.status(HttpStatus.OK).body(userService.getAllUsers());
+		List<UserServiceResponse> userServiceResponse = userService.getAllUsers();
+
+		return ResponseEntity.status(HttpStatus.OK).body(userServiceResponse);
 	}
 
 	@PutMapping("/{id}")

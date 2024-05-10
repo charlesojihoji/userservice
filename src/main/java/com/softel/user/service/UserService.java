@@ -10,7 +10,7 @@ public interface UserService {
 	
 	public User createUser(User user);
 	
-	public List<User> getAllUsers();
+	public List<UserServiceResponse> getAllUsers();
 	
 	public User getUser(String hotelId);
 	
