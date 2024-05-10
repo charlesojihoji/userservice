@@ -1,9 +1,11 @@
 package com.softel.user.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.softel.user.response.RateServiceResponse;
 import com.softel.user.response.UserServiceResponse;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -13,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.softel.user.entity.User;
+import com.softel.user.feignclient.RateServiceClient;
 import com.softel.user.repository.UserRepository;
 
 @Service
@@ -22,6 +25,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private RateServiceClient rateServiceClient;
 
 	@Override
 	public User createUser(User user) {
@@ -44,20 +50,28 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public List<User> getAllUsers() {
-
-		List<User> listOfUsers = null;
+	public List<UserServiceResponse> getAllUsers() {
 		
-		try {
-			logger.info("Get a List of Users:UserServiceImpl");
+		List<UserServiceResponse> listOfUsers = new ArrayList<>();
 
-			listOfUsers = userRepository.findAll();
-		} catch (Exception e) {
-			logger.error("An Error Occurred While Getting a List of Users:UserServiceImpl. Exception message is: "
-					+ e.getMessage());
+		UserServiceResponse userServiceResponse = new UserServiceResponse();
 
-			e.printStackTrace();
+		logger.info("Get a List of Users:UserServiceImpl");
+
+		List<User> userList = userRepository.findAll();
+
+		for (User users : userList) {
+			userServiceResponse.setAbout(users.getAbout());
+			userServiceResponse.setEmailId(users.getEmailId());
+			userServiceResponse.setId(users.getId());
+			userServiceResponse.setName(users.getName());
 		}
+		
+		ResponseEntity<List<RateServiceResponse>> rateServiceResponse = rateServiceClient.getAll();
+		userServiceResponse.setRateServiceResponse(rateServiceResponse.getBody());
+
+		listOfUsers.add(userServiceResponse);
+
 		return listOfUsers;
 	}
 
