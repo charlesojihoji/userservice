@@ -8,7 +8,7 @@ public class UserServiceResponse {
     private String name;
     private String emailId;
     private String about;
-    private List<RateServiceResponse> rateServiceResponse;
+    //private List<RateServiceResponse> rateServiceResponse;
 	public String getId() {
 		return id;
 	}
@@ -33,11 +33,11 @@ public class UserServiceResponse {
 	public void setAbout(String about) {
 		this.about = about;
 	}
-	public List<RateServiceResponse> getRateServiceResponse() {
-		return rateServiceResponse;
-	}
-	public void setRateServiceResponse(List<RateServiceResponse> rateServiceResponse) {
-		this.rateServiceResponse = rateServiceResponse;
-	}
+	/*
+	 * public List<RateServiceResponse> getRateServiceResponse() { return
+	 * rateServiceResponse; } public void
+	 * setRateServiceResponse(List<RateServiceResponse> rateServiceResponse) {
+	 * this.rateServiceResponse = rateServiceResponse; }
+	 */
 
 }
