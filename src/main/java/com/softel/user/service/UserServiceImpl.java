@@ -54,33 +54,33 @@ public class UserServiceImpl implements UserService {
 		
 		List<UserServiceResponse> listOfUsers = new ArrayList<>();
 
-		UserServiceResponse userServiceResponse = new UserServiceResponse();
-
 		logger.info("Get a List of Users:UserServiceImpl");
 
 		List<User> userList = userRepository.findAll();
 
 		for (User users : userList) {
+			UserServiceResponse userServiceResponse = new UserServiceResponse();
+			
 			userServiceResponse.setAbout(users.getAbout());
 			userServiceResponse.setEmailId(users.getEmailId());
 			userServiceResponse.setId(users.getId());
 			userServiceResponse.setName(users.getName());
+			
+			listOfUsers.add(userServiceResponse);
 		}
 		
-		ResponseEntity<List<RateServiceResponse>> rateServiceResponse = rateServiceClient.getAll();
-		userServiceResponse.setRateServiceResponse(rateServiceResponse.getBody());
-
-		listOfUsers.add(userServiceResponse);
+		//ResponseEntity<List<RateServiceResponse>> rateServiceResponse = rateServiceClient.getAll();
+		//userServiceResponse.setRateServiceResponse(rateServiceResponse.getBody());
 
 		return listOfUsers;
 	}
 
 	@Override
-	public User getUser(String hotelId) {
+	public User getUser(String userId) {
 
-		logger.info("Get a Single User:UserServiceImpl " + hotelId);
+		logger.info("Get a Single User:UserServiceImpl " + userId);
 
-		return userRepository.findUserByHotelId(hotelId).orElse(new User());
+		return userRepository.findById(userId).orElse(new User());
 	}
 
 	@Override

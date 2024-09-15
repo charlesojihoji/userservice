@@ -12,6 +12,6 @@ import com.softel.user.response.RateServiceResponse;
 @FeignClient(name = "RATE-SERVICE")
 public interface RateServiceClient {
 
-	@GetMapping("/ratings")
-    public ResponseEntity<List<RateServiceResponse>> getAll();
+	@GetMapping("/hotels/{hotelId}")
+    public ResponseEntity<List<RateServiceResponse>> getRatingByHotelId(String hotelId);
 }
