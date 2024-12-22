@@ -1,5 +1,6 @@
 package com.softel.user.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.softel.user.response.HotelServiceResponse;
@@ -102,6 +103,29 @@ public class UserController {
 
 		return listOfHotelServiceResponse; // ResponseEntity.status(HttpStatus.OK).body(listOfHotels);
 	}
+	@GetMapping("/getListOfHotelsBasedOnLocation/{place}")
+	public List<HotelServiceResponse> getListOfHotelsBasedOnLocation(@PathVariable String place) {
+
+		logger.info("Getting all hotels ");
+
+		ResponseEntity<List<HotelServiceResponse>> listOfHotels = hotelServiceClient.getListOfHotelsBasedOnLocation(place);
+
+		List<HotelServiceResponse> listOfHotelServiceResponse = listOfHotels.getBody();
+
+		return listOfHotelServiceResponse;
+	}
+	@GetMapping("/getListOfHotelsByName/{name}")
+	public List<HotelServiceResponse> getListOfHotelsByName(@PathVariable String name) {
+
+		logger.info("Getting all hotels ");
+
+		ResponseEntity<List<HotelServiceResponse>> listOfHotels = hotelServiceClient.getListOfHotelsByName(name);
+
+		List<HotelServiceResponse> listOfHotelServiceResponse = listOfHotels.getBody();
+
+		return listOfHotelServiceResponse;
+	}
+
 
 	@GetMapping("/getHotelsAndRatings")
 	public List<HotelServiceResponse> getListOfHotelsAndRatings() {
@@ -111,12 +135,44 @@ public class UserController {
 		ResponseEntity<List<HotelServiceResponse>> listOfHotels = hotelServiceClient.getAll();
 
 		List<HotelServiceResponse> listOfHotelServiceResponse = listOfHotels.getBody();
+		List<HotelServiceResponse> listOfHotelServiceResponseList = new ArrayList<>();
 		
 		for(HotelServiceResponse hotelServiceResponse: listOfHotelServiceResponse) {
 			String hotelId = hotelServiceResponse.getId();
 			ResponseEntity<List<RateServiceResponse>> listOfRatings = rateServiceClient.getRatingByHotelId(hotelId);
+			HotelServiceResponse hotelServiceResponse1 = new HotelServiceResponse();
+			hotelServiceResponse1.setAbout(hotelServiceResponse.getAbout());
+			hotelServiceResponse1.setId(hotelServiceResponse.getId());
+			hotelServiceResponse1.setLocation(hotelServiceResponse.getLocation());
+			hotelServiceResponse1.setName(hotelServiceResponse.getName());
+			for(RateServiceResponse rateServiceResponse : listOfRatings.getBody()){
+				hotelServiceResponse1.setRating(rateServiceResponse.getRating());
+				hotelServiceResponse1.setFeedback(rateServiceResponse.getFeedback());
+				listOfHotelServiceResponseList.add(hotelServiceResponse1);
+			}
 		}
 
-		return listOfHotelServiceResponse;
+		return listOfHotelServiceResponseList;
 	}
+	@GetMapping("/getListOfHotelIdsBasedOnRating/{rating}")
+	public List<HotelServiceResponse> getListOfHotelIdsBasedOnRating(@PathVariable String rating) {
+
+		logger.info("Getting all hotels and their ratings");
+
+		ResponseEntity<List<RateServiceResponse>> listOfRatings = rateServiceClient.getListOfHotelIdsBasedOnRating(rating);
+		List<HotelServiceResponse> listOfHotelServiceResponseList = new ArrayList<>();
+		for(RateServiceResponse rateServiceResponse:listOfRatings.getBody()){
+			HotelServiceResponse hotelServiceResponse = new HotelServiceResponse();
+			ResponseEntity<HotelServiceResponse> hotels = hotelServiceClient.getHotelById(rateServiceResponse.getHotelId());
+			hotelServiceResponse.setRating(rateServiceResponse.getRating());
+			hotelServiceResponse.setFeedback(rateServiceResponse.getFeedback());
+			hotelServiceResponse.setName(hotels.getBody().getName());
+			hotelServiceResponse.setLocation(hotels.getBody().getLocation());
+			hotelServiceResponse.setAbout(hotels.getBody().getAbout());
+			hotelServiceResponse.setId(hotels.getBody().getId());
+			listOfHotelServiceResponseList.add(hotelServiceResponse);
+		}
+		return listOfHotelServiceResponseList;
+	}
+
 }

@@ -6,6 +6,8 @@ public class HotelServiceResponse {
 		private String name;
 		private String location;
 		private String about;
+		private int rating;
+		private String feedback;
 		
 		public String getId() {
 			return id;
@@ -32,4 +34,19 @@ public class HotelServiceResponse {
 			this.about = about;
 		}
 
+	public int getRating() {
+		return rating;
+	}
+
+	public void setRating(int rating) {
+		this.rating = rating;
+	}
+
+	public String getFeedback() {
+		return feedback;
+	}
+
+	public void setFeedback(String feedback) {
+		this.feedback = feedback;
+	}
 }
